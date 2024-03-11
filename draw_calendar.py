@@ -15,11 +15,11 @@ class CalendarImage:
         self.initialize_variables()        
 
     def initialize_variables(self):
-        self.width = 800
-        self.height = 480
+        self.width = 600
+        self.height = 448
         self.weeks = 4
-        self.top_padding = 35
-        self.box_padding = 30
+        self.top_padding = 30
+        self.box_padding = 20
         self.calendar_height = self.height - self.top_padding - 1
         self.box_height = math.floor(self.calendar_height / self.weeks)
         self.box_width = math.floor(self.width / 7)
@@ -138,8 +138,8 @@ class CalendarImage:
             # Draw each event
             for i in range(num_events):
                 # truncate event name if too long
-                if len(self.events_dict[date][i][0]) > 17:
-                    self.events_dict[date][i][0] = self.events_dict[date][i][0][:16] + ".."
+                if len(self.events_dict[date][i][0]) > 12:
+                    self.events_dict[date][i][0] = self.events_dict[date][i][0][:11] + ".."
                 
                 if self.cal_id in self.events_dict[date][i][1]: 
                     text_colour = self.colors['internal_event']
