@@ -27,13 +27,13 @@ class CalendarImage:
 
         self.colors = {
             # Colour options are: "black", "white", "green", "blue", "red", "yellow", "orange"
-            'outline': "black",
-            'days': "black", # days of the week text
-            'number': "black",
+            'outline': "white",
+            'days': "white", # days of the week text
+            'number': "white",
             'today_text': "white",
             'today_circle': "red",
-            'background': "white",
-            'internal_event': "blue",
+            'background': "green",
+            'internal_event': "yellow",
             'external_event': "orange",
         }
 
