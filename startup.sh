@@ -6,7 +6,7 @@ while ! ping -c 1 -W 1 google.com; do
 done
 
 # Navigate to your folder
-cd /home/calendar/inky-calendar
+cd /home/calendar/inky-calendar-small
 
 # Git pull
 git pull
