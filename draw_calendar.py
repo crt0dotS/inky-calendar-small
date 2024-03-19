@@ -31,10 +31,10 @@ class CalendarImage:
             'days': "white", # days of the week text
             'number': "white",
             'today_text': "white",
-            'today_circle': "red",
-            'background': "green",
+            'today_circle': "orange",
+            'background': "black",
             'internal_event': "yellow",
-            'external_event': "orange",
+            'external_event': "green",
         }
 
         self.prev_monday = (datetime.datetime.utcnow() - datetime.timedelta(days=datetime.datetime.utcnow().weekday())) - datetime.timedelta(days=7)
