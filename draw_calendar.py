@@ -18,7 +18,7 @@ class CalendarImage:
         self.width = 600
         self.height = 448
         self.weeks = 4
-        self.top_padding = 30
+        self.top_padding = 35
         self.box_padding = 20
         self.calendar_height = self.height - self.top_padding - 1
         self.box_height = math.floor(self.calendar_height / self.weeks)
@@ -28,13 +28,16 @@ class CalendarImage:
         self.colors = {
             # Colour options are: "black", "white", "green", "blue", "red", "yellow", "orange"
             'outline': "white",
-            'days': "white", # days of the week text
-            'number': "white",
+            'days': "yellow", # days of the week text
+            'number': "orange",
             'today_text': "white",
-            'today_circle': "orange",
+            'today_circle': "green",
             'background': "black",
             'internal_event': "yellow",
-            'external_event': "green",
+            'external_event': "white",
+            'month': "orange",
+            'heading': "blue",
+            'battery': "red",
         }
 
         self.prev_monday = (datetime.datetime.utcnow() - datetime.timedelta(days=datetime.datetime.utcnow().weekday())) - datetime.timedelta(days=7)
@@ -45,6 +48,7 @@ class CalendarImage:
         self.small_font = ImageFont.truetype("AtkinsonHyperlegible-Regular.ttf", 13)
         self.img = Image.new('RGB', (self.width, self.height), color='white')
         self.d = ImageDraw.Draw(self.img)
+        self.bat_lvl = 0
 
 
     def load_credentials(self):
@@ -66,6 +70,9 @@ class CalendarImage:
         for event in events:
             start_date, end_date, time, end = self.extract_event_details(event)
             self.add_event_to_dict(start_date, [event["summary"], event["organizer"]["email"], time, end])
+
+    def populate_battery(self, bat_lvl):
+        self.bat_lvl = bat_lvl
 
 
     def extract_event_details(self, event):
@@ -97,7 +104,13 @@ class CalendarImage:
             month = datetime.datetime.utcnow().month
 
             # Draw capitalised month and year at top of calendar
-            self.d.text((2,0), calendar.month_name[month][:3].upper() + " " + str(year), font=self.font, fill=self.colors['number'])
+            self.d.text((2,0), calendar.month_name[month][:3].upper() + " " + str(year), font=self.font, fill=self.colors['month'])
+
+            # Draw calendar id
+            self.d.text(((self.width/2)-100,0),self.cal_id, font=self.font, fill=self.colors['heading'])
+
+            # Draw battery level
+            self.d.text((self.width-50,0), str(round(self.bat_lvl)) + " %", font=self.font, fill=self.colors['battery'])
 
             # Draw calendar days_of_week at top of calendar
             for i in range(7):

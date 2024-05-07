@@ -3,10 +3,26 @@ import sys
 from PIL import Image
 from inky.auto import auto
 from draw_calendar import CalendarImage
+from pisugar import *
 import time
 import signal 
 import RPi.GPIO as GPIO 
 import datetime
+import time
+
+def getBattery():
+    print("Getting batter...")
+    conn, event_conn = connect_tcp('localhost')
+    s = PiSugarServer(conn, event_conn)
+
+    s.register_single_tap_handler(lambda: print('single'))
+    s.register_double_tap_handler(lambda: print('double'))
+
+    version = s.get_version()
+    battery_level = s.get_battery_level()
+    print(version)
+    print(battery_level)
+    return battery_level
 
 def getMonth(): 
     print("Getting month...")
@@ -16,7 +32,9 @@ def getMonth():
     end_time = (cal_img.prev_monday + datetime.timedelta(days=(cal_img.weeks * 7) - 1)).replace(hour=23, minute=59, second=59, microsecond=999999).isoformat() + "Z"
     
     events = cal_img.get_events(start_time, end_time)
+    bat_lvl = getBattery()
     cal_img.populate_events_dict(events)
+    cal_img.populate_battery(bat_lvl)
     cal_img.draw_month()
     cal_img.draw_month_events()
     cal_img.save_image()
@@ -44,15 +62,10 @@ if __name__ == "__main__":
     
     getMonth()
     display()
+    time.sleep(1)
+    display()
+    time.sleep(10)
     
-    # Poll GPIO buttons
-    while True:
-        # if BUTTON A is pressed, display calendar
-        if GPIO.input(BUTTONS[0]) == GPIO.LOW:
-            print("Button A pressed")
-            getMonth()
-            display()
-
     # Test on mac 
     # print("Running on mac")
     # getMonth()

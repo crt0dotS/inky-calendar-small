@@ -16,3 +16,6 @@ source .venv/bin/activate
 
 # Run main.py
 python main.py
+
+sleep 300
+shutdown now
